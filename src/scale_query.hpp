@@ -17,19 +17,19 @@
 
 #include "structure.hpp"
 #include "scale_database.hpp"
+#include "scale_visitor.hpp"
 
 //****************************************************************************
-namespace harmony{
-  namespace query{
+namespace harmony::query{
 //****************************************************************************
 
-    using predicate         = std::function<bool(const structure&)>;
+    using predicate             = std::function<bool(const structure&)>;
 
     template<typename P>
     concept structure_predicate = std::is_invocable_r_v<bool, P, const structure&>;
 
-    using optional_scale_entry = std::optional< std::reference_wrapper<const scale_entry>>;
-    //todo: why use std::reference_wrapper and not scale_entry& - why one safe over other
+    using optional_scale_entry  = std::optional<std::reference_wrapper<const scale_entry>>;
+    // read: using optional with references..how reference_wrapper works
 
                               // Predicate factories
 
@@ -39,7 +39,6 @@ namespace harmony{
     inline auto               brightness_range(int min_brightness, int max_brightness);
 
                               // Combinators
-
                               template<structure_predicate A, structure_predicate B>
     inline auto               operator&&(A a, B b);
 
@@ -50,11 +49,9 @@ namespace harmony{
     inline auto               operator!(A a);
 
 
-                              // Search
+    optional_scale_entry      find_first(const predicate& pred); 
+    void                      visit(const predicate& pred, visitor& v);
 
-    optional_scale_entry      find_first(const predicate& pred); // check std:either<a,b>
-    std::vector<scale_entry>  find_all(const predicate& pred);    
- 
     //***************************************************************************
     // Predicate factories implementations
     //***************************************************************************
@@ -139,8 +136,7 @@ namespace harmony{
           return !a(s);
         };
     }
-  //****************************************************************************
- } // namespace query
-} // namespace harmony
+//****************************************************************************
+} // namespace harmony::query
 //****************************************************************************
 

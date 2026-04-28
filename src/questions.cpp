@@ -1,18 +1,28 @@
-// ! find_all : return a view of vector instead of vector? to avoid heap allocation
-//scale query.hpp
 
-
-
-//! return span from catalog?
-
-// ! in structure::mode()
 /*
- when i do mode(4) it return a structure bitrset<12>
+QUESTIONS----
 
-name is external in the database.
+1) split the source code to different folders?
 
-option1: in scale datbase:
-const scale_Etnry* find by strutcure(const structure&s);
+harmony/
+  
+  core/                     # foundational types
+    
+
+  query/                    # everything in harmony::query
 
 
-*/
+****************************************
+
+2) query_view : i could have used type erasure
+store a predicate pred; 
+
+encapsulation boundaries:
+
+scale_query.cpp          — hidden: walks the database, calls accept()
+scale_query.hpp          — declares: find_first(), visit()
+query_view (header)      — exposed API: find(), first(), collect(), count()...
+
+query_view is intentionally public.  doesnt touch database directly
+
+/

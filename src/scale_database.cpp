@@ -23,6 +23,7 @@ namespace harmony::scale_database{
  */
   const std::vector<scale_entry>& catalog()                          //? return span from catalog?
   {
+    //todo : patter has also now optional name to give. so construct database using that.
     static std::vector<scale_entry> scales = {
       // Pentatonic scales (5 notes)
       {"Major Pentatonic",        structure{0, 2, 4, 7, 9}},

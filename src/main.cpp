@@ -8,50 +8,26 @@
 //*
 //*
 //****************************************************************************
-#include <iostream>                 // For cout
-#include <iomanip>
-#include <chrono>                   // For timing
-                          
-#include "structure.hpp"            // For structure
-#include "scale_query.hpp"
-#include "scale_query_t.hpp"
-//****************************************************************************
+#include <iostream>                //for cout
 
+#include "scale_query_view.hpp"
+//****************************************************************************
+using namespace harmony::query;
+//****************************************************************************
 int main()
 {
-    const int ITERATIONS = 1000000;
 
-    // --- Benchmark 1: std::function version ---
-    {
-      using namespace harmony::query;
+  auto q = cardinality(7) && has_tritone();
+  query_results qr;
+  visit(cardinality(7), qr);
 
-      auto start = std::chrono::high_resolution_clock::now();
-      for(int i = 0; i < ITERATIONS; ++i)
-      {
-        auto results = find_all(
-          cardinality(7) && has_tritone() 
-        );
-      } 
-      auto end = std::chrono::high_resolution_clock::now();
-      auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-      std::cout << "std::function : " << ms << " ms\n";
-    }
 
-    // --- Benchmark 2: template/concept version ---
-    {
-      using namespace harmony::tquery;
+  auto results = find(q).collect();
+ 
+  auto first_result = find(q).first();
 
-      auto start = std::chrono::high_resolution_clock::now();
-      for(int i = 0; i < ITERATIONS; ++i)
-      {
-        auto results = find_all(
-          cardinality(7) && has_tritone() 
-        );
-      }
-      auto end = std::chrono::high_resolution_clock::now();
-      auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-      std::cout << "template/concept: " << ms << " ms\n";
-    }
+  find(q).stream(std::cout);
+
 
  return 0;
 }
