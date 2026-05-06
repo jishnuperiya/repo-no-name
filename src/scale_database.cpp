@@ -23,6 +23,7 @@ namespace harmony::scale_database{
  */
   const std::vector<scale_entry>& catalog()                          //? return span from catalog?
   {
+    //todo : patter has also now optional name to give. so construct database using that.
     static std::vector<scale_entry> scales = {
       // Pentatonic scales (5 notes)
       {"Major Pentatonic",        structure{0, 2, 4, 7, 9}},
@@ -73,7 +74,7 @@ namespace harmony::scale_database{
  * @param name  The name to search for (case-sensitive, exact match).
  * @return      Pointer to the matching entry, or nullptr if not found.
  */
-  const scale_entry* find_by_name(std::string_view name)         //? should i use std::optional? what is the cost-- how to think about the cost
+  std::optional<const scale_entry*> find_by_name(std::string_view name)         //? should i use std::optional? what is the cost-- how to think about the cost
   {
     const auto& scales = catalog();
     for (const auto& entry : scales)
@@ -83,7 +84,7 @@ namespace harmony::scale_database{
         return &entry;
       }
     }
-    return nullptr;
+    return std::nullopt;
   }
 
 /**

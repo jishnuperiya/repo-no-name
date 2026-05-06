@@ -10,7 +10,7 @@
 //****************************************************************************
 
 #include "scale_query.hpp"
-#include "scale_query_t.hpp"
+
 //****************************************************************************
 namespace harmony::query{
 //****************************************************************************
@@ -35,24 +35,18 @@ namespace harmony::query{
     return std::nullopt;
   }
 
-/**
- * Return all catalog entries whose pattern satisfies the predicate.
- *
- * @param pred  The predicate to test each catalog entry against.
- */
-  [[nodiscard]] std::vector<scale_entry> find_all(const predicate& pred)
+  void visit(const predicate& pred, visitor& v)
   {
-    std::vector<scale_entry> result;
-
     for (const auto& entry : catalog())
     {
       if (pred(entry.pattern))
       {
-        result.push_back(entry);
+        v.accept(entry);
       }
     }
-    return result;
+
   }
+
 
 
 //****************************************************************************

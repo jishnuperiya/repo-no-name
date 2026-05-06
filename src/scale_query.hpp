@@ -17,19 +17,18 @@
 
 #include "structure.hpp"
 #include "scale_database.hpp"
+#include "scale_visitor.hpp"
 
 //****************************************************************************
-namespace harmony{
-  namespace query{
+namespace harmony::query{
 //****************************************************************************
 
-    using predicate         = std::function<bool(const structure&)>;
+    using predicate             = std::function<bool(const structure&)>;
 
     template<typename P>
     concept structure_predicate = std::is_invocable_r_v<bool, P, const structure&>;
 
-    using optional_scale_entry = std::optional< std::reference_wrapper<const scale_entry>>;
-    //todo: why use std::reference_wrapper and not scale_entry& - why one safe over other
+    using optional_scale_entry  = std::optional<std::reference_wrapper<const scale_entry>>;
 
                               // Predicate factories
 
@@ -39,22 +38,16 @@ namespace harmony{
     inline auto               brightness_range(int min_brightness, int max_brightness);
 
                               // Combinators
+    inline auto               operator&&(structure_predicate auto a, structure_predicate auto b);
 
-                              template<structure_predicate A, structure_predicate B>
-    inline auto               operator&&(A a, B b);
+    inline auto               operator||(structure_predicate auto a, structure_predicate auto b);
 
-                              template<structure_predicate A, structure_predicate B>
-    inline auto               operator||(A a, B b);
-
-                              template<structure_predicate A>
-    inline auto               operator!(A a);
+    inline auto               operator!(structure_predicate auto a);
 
 
-                              // Search
+    optional_scale_entry      find_first(const predicate& pred); 
+    void                      visit(const predicate& pred, visitor& v);
 
-    optional_scale_entry      find_first(const predicate& pred); // check std:either<a,b>
-    std::vector<scale_entry>  find_all(const predicate& pred);    
- 
     //***************************************************************************
     // Predicate factories implementations
     //***************************************************************************
@@ -113,8 +106,7 @@ namespace harmony{
   //***************************************************************************
   // Predicate combinators implementations
   //***************************************************************************
-    template<structure_predicate A, structure_predicate B>
-    inline auto operator&&(A a, B b) //can i pass by const reference predicate?
+    inline auto operator&&(structure_predicate auto a, structure_predicate auto b) //can i pass by const reference predicate?
     {
       return[a, b](const structure& s)
         {
@@ -122,8 +114,7 @@ namespace harmony{
         };
     }
 
-    template<structure_predicate A, structure_predicate B>
-    inline auto operator||(A a, B b) //can i pass by const reference predicate?
+    inline auto operator||(structure_predicate auto a, structure_predicate auto b) //can i pass by const reference predicate?
     {
       return[a, b](const structure& s)
         {
@@ -131,16 +122,14 @@ namespace harmony{
         };
     }
 
-    template<structure_predicate A>
-    inline auto operator!(A a) //can i pass by const reference predicate?
+    inline auto operator!(structure_predicate auto a) //can i pass by const reference predicate?
     {
       return[a](const structure& s)
         {
           return !a(s);
         };
     }
-  //****************************************************************************
- } // namespace query
-} // namespace harmony
+//****************************************************************************
+} // namespace harmony::query
 //****************************************************************************
 

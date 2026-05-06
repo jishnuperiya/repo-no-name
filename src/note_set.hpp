@@ -319,7 +319,7 @@ namespace harmony{
  /**
   * Return the union of two note sets.
 	*/
-	[[nodiscard]] constexpr note_set operator|(note_set lhs, const note_set& rhs) noexcept
+	constexpr note_set operator|(note_set lhs, const note_set& rhs) noexcept
 	{
       return lhs|= rhs;
 	}
@@ -327,7 +327,7 @@ namespace harmony{
  /**
   * Return the intersection of two note sets.
 	*/
-	[[nodiscard]] constexpr note_set operator&(note_set lhs, const note_set& rhs) noexcept
+	constexpr note_set operator&(note_set lhs, const note_set& rhs) noexcept
 	{
 	  return lhs &= rhs;
 	}

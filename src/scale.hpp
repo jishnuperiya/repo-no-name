@@ -23,14 +23,23 @@ namespace harmony
   {
   public:          // Construction
                       scale(note root, note_set notes);
-                      
-                      //DOUBT) do we need a default ctor?
-                      // do we need a default state for every value type?
-                      // no default ctor -> user cant do scale s; --> enforces: scale must be always be valid
+                      /*
+                      QUESTION 2: should i make this constructor as private and make class strdutcure a friend?
+                      so only structure could construct a scale?
+                      so the scale can only be built by the strducture. 
+                      -> but is it bad to make this tight coupling between classes?
+                      is dependency bad?
 
+                      */
+                      /*
+                      QUESTION 1:
+                      my invariant for this class is that scale should always has a root and non-empty
+                      set of notes. so i didnt provide any default ctor. is it the right call?
+                      */
+                      
   public:          // Operations
     note              get_root() const;
-    const note_set&   get_notes() const;
+    note_set          get_notes() const;
   
   private:         // Representation
     note              root_;

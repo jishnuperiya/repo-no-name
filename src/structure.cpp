@@ -117,11 +117,10 @@ namespace harmony{
     return { root, notes};
   }
 
-  std::optional<mode_result> structure::mode(int degree) const
+  std::optional<structure> structure::mode(int degree) const
   {
     if (degree <= 0 || degree > cardinality())
     {
-      assert(false);
       return std::nullopt;
     }
 
@@ -152,11 +151,11 @@ namespace harmony{
     {
       if (entry.pattern == rotated)
       {
-        return mode_result(rotated, std::optional<std::string_view>{entry.name});
+        return structure{rotated}.set_name(entry.name);
       }
     }
  
-    return  mode_result{rotated, std::optional<std::string_view>{} };
+    return  structure{rotated};
   }
 
   int structure::cardinality() const
@@ -193,9 +192,15 @@ namespace harmony{
     return brightness;
   }
 
-  void structure::set_name(std::string_view n)
+  structure structure::complement() const
   {
-    name_.emplace(n);
+    return structure{ ~intervals_ };
+  }
+
+  structure& structure::set_name(std::string_view n)
+  {
+    name_ = n;
+    return *this;
   }
 
   void structure::clear_name()
@@ -203,13 +208,9 @@ namespace harmony{
     name_.reset();
   }
 
-  std::optional<std::string_view> structure::name() const
+  std::optional<std::string> structure::name() const
   {
-    if (name_)
-    {
-      return std::string_view{ name_->data(),name_->size() };
-    }
-    return std::nullopt;
+    return name_;
   }
 
 //****************************************************************************

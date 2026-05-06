@@ -40,7 +40,7 @@ namespace harmony
   /**
   * Return the set of notes in the scale.
   */
-  const note_set& scale::get_notes() const
+  note_set scale::get_notes() const
   {
     return notes_;
   }
