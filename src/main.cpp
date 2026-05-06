@@ -18,8 +18,6 @@ int main()
 {
 
   auto q = cardinality(7) && has_tritone();
-  query_results qr;
-  visit(cardinality(7), qr);
 
 
   auto results = find(q).collect();

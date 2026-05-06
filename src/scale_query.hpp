@@ -29,7 +29,6 @@ namespace harmony::query{
     concept structure_predicate = std::is_invocable_r_v<bool, P, const structure&>;
 
     using optional_scale_entry  = std::optional<std::reference_wrapper<const scale_entry>>;
-    // read: using optional with references..how reference_wrapper works
 
                               // Predicate factories
 
@@ -39,14 +38,11 @@ namespace harmony::query{
     inline auto               brightness_range(int min_brightness, int max_brightness);
 
                               // Combinators
-                              template<structure_predicate A, structure_predicate B>
-    inline auto               operator&&(A a, B b);
+    inline auto               operator&&(structure_predicate auto a, structure_predicate auto b);
 
-                              template<structure_predicate A, structure_predicate B>
-    inline auto               operator||(A a, B b);
+    inline auto               operator||(structure_predicate auto a, structure_predicate auto b);
 
-                              template<structure_predicate A>
-    inline auto               operator!(A a);
+    inline auto               operator!(structure_predicate auto a);
 
 
     optional_scale_entry      find_first(const predicate& pred); 
@@ -110,8 +106,7 @@ namespace harmony::query{
   //***************************************************************************
   // Predicate combinators implementations
   //***************************************************************************
-    template<structure_predicate A, structure_predicate B>
-    inline auto operator&&(A a, B b) //can i pass by const reference predicate?
+    inline auto operator&&(structure_predicate auto a, structure_predicate auto b) //can i pass by const reference predicate?
     {
       return[a, b](const structure& s)
         {
@@ -119,8 +114,7 @@ namespace harmony::query{
         };
     }
 
-    template<structure_predicate A, structure_predicate B>
-    inline auto operator||(A a, B b) //can i pass by const reference predicate?
+    inline auto operator||(structure_predicate auto a, structure_predicate auto b) //can i pass by const reference predicate?
     {
       return[a, b](const structure& s)
         {
@@ -128,8 +122,7 @@ namespace harmony::query{
         };
     }
 
-    template<structure_predicate A>
-    inline auto operator!(A a) //can i pass by const reference predicate?
+    inline auto operator!(structure_predicate auto a) //can i pass by const reference predicate?
     {
       return[a](const structure& s)
         {

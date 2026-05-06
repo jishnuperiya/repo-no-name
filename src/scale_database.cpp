@@ -74,7 +74,7 @@ namespace harmony::scale_database{
  * @param name  The name to search for (case-sensitive, exact match).
  * @return      Pointer to the matching entry, or nullptr if not found.
  */
-  const scale_entry* find_by_name(std::string_view name)         //? should i use std::optional? what is the cost-- how to think about the cost
+  std::optional<const scale_entry*> find_by_name(std::string_view name)         //? should i use std::optional? what is the cost-- how to think about the cost
   {
     const auto& scales = catalog();
     for (const auto& entry : scales)
@@ -84,7 +84,7 @@ namespace harmony::scale_database{
         return &entry;
       }
     }
-    return nullptr;
+    return std::nullopt;
   }
 
 /**

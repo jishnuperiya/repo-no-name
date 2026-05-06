@@ -23,15 +23,15 @@ namespace harmony{
 
   struct scale_entry  
   {
-    std::string_view name;       
+    std::string_view name;       //QUESTION: non owning? dangling refernce issues??
     structure pattern;           
   };
 
   namespace scale_database
   {
-    const std::vector<scale_entry>&  catalog();
-    const scale_entry*               find_by_name(std::string_view);
-    size_t                           size();
+    const std::vector<scale_entry>&     catalog();
+    std::optional<const scale_entry*>   find_by_name(std::string_view);
+    size_t                              size();
   }
 
 //****************************************************************************

@@ -39,7 +39,7 @@ namespace harmony::query{
     {
       query_results qr;
       visit(pred_, qr);
-      return qr.entries();
+      return std::vector <scale_entry>(qr.begin(), qr.end());
     }
 
     void stream(std::ostream& os) const
