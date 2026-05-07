@@ -34,6 +34,8 @@ namespace harmony{
                                      structure();
                                      structure(std::initializer_list<int> pattern);
                                      structure(std::bitset<12> bits);
+                                     structure(std::uint16_t bits) : structure(std::bitset<12>(bits & 0b111111111111)) {}
+
    /*
    QUESTION 3 : i could have implemented a catalog lookup inside the constructor to construct the name_ 
    using the provided intervals. then the ctor will have the extra cost of this catalog look up.
@@ -73,7 +75,8 @@ namespace harmony{
 
   private:                        // Representation
     std::bitset<12>                  intervals_; 
-    std::optional<std::string>       name_;
+    std::optional<std::string>       name_; // better to lookup in catalog and not store here
+
 
     /*
     QUESTION 1 :
