@@ -5,6 +5,7 @@
 #pragma once
 
 #include <ranges>
+#include <vector>
 
 #include "scale_database.hpp"
 #include "scale_query.hpp"
