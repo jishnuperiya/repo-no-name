@@ -14,6 +14,7 @@
 #include <array>
 #include <string_view>
 #include <vector>
+#include <ranges>
 
 #include "structure.hpp"
 
@@ -30,10 +31,10 @@ namespace harmony{
   namespace scale_database
   {
     const std::vector<scale_entry>&     catalog();
+
     std::optional<const scale_entry*>   find_by_name(std::string_view);
     size_t                              size();
   }
-
 //****************************************************************************
 } // namespace harmony
 //****************************************************************************
