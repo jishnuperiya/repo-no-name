@@ -14,7 +14,7 @@
 #include <initializer_list>  // For initializer_list
 #include <bitset>            // For bitset
 #include <optional>          // For optional
-#include <string_view>       // For string_view
+#include <string>            // For string
 
 #include "scale.hpp"
 
