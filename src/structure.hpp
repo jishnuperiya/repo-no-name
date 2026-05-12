@@ -34,6 +34,8 @@ namespace harmony{
                                      structure();
                                      structure(std::initializer_list<int> pattern);
                                      structure(std::bitset<12> bits);
+                                     structure(std::uint16_t bits)
+                                       : structure(std::bitset<12>(bits & 0b111111111111)) { }
 
   public:                         // Operations
     bool                             operator==(const structure& other) const;
@@ -56,7 +58,7 @@ namespace harmony{
 
   private:                        // Representation
     std::bitset<12>                  intervals_; 
-    std::optional<std::string>       name_; // better to lookup in catalog and not store here
+    //std::optional<std::string>       name_; // better to lookup in catalog and not store here
   };
    
   std::ostream& operator<<(std::ostream& os, const structure& s); //todo
